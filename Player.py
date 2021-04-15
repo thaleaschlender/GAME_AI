@@ -7,21 +7,17 @@ class Player(pygame.sprite.Sprite):
         self.SCREEN_WIDTH = SCREEN_WIDTH
         self.SCREEN_HEIGHT = SCREEN_HEIGHT
         #set appearence
-        self.width = 40; self.height = 75
-        self.image = pygame.Surface([self.width, self.height])
-        self.image.fill((0,0,255))
-        #self.image = pygame.image.load("picture.png")
+        self.width = 50; self.height = 76
+        #self.image = pygame.Surface([self.width, self.height])
+        #self.image.fill((0,0,255))
+        self.image = pygame.image.load("bird.png")
         self.surf = pygame.Surface((self.width, self.height))
-        self.rect = self.surf.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT-(self.height/2)))
+        self.rect = self.surf.get_rect(center=(SCREEN_WIDTH/2, (SCREEN_HEIGHT/2)))
 
     def move(self):
         pressed_keys = pygame.key.get_pressed()
-        if self.rect.top > 0:
-            if pressed_keys[K_UP]:
-                self.rect.move_ip(0, -5)
-        if self.rect.bottom < self.SCREEN_HEIGHT:
-            if pressed_keys[K_DOWN]:
-                self.rect.move_ip(0,5)
+
+
 
         if self.rect.left > 0:
             if pressed_keys[K_LEFT]:

@@ -11,21 +11,24 @@ class Background():
         self.bgY1 = 0
         self.bgX1 = 0
 
-        self.bgY2 = 0
-        self.bgX2 = self.rectBGimg.width
+        self.bgY2 = self.rectBGimg.height
+        self.bgX2 = 0
+
 
         self.moving_speed = 5
 
         self.DISPLAYSURF = DISPLAYSURF
 
     def update(self):
-        self.bgX1 -= self.moving_speed
-        self.bgX2 -= self.moving_speed
-        if self.bgX1 <= -self.rectBGimg.width:
-            self.bgX1 = self.rectBGimg.width
-        if self.bgX2 <= -self.rectBGimg.width:
-            self.bgX2 = self.rectBGimg.width
+        self.bgY1 -= self.moving_speed
+        self.bgY2 -= self.moving_speed
+        if self.bgY1 <= -self.rectBGimg.height:
+            self.bgY1 = self.rectBGimg.height
+        if self.bgY2 <= -self.rectBGimg.height:
+            self.bgY2 = self.rectBGimg.height
 
     def render(self):
         self.DISPLAYSURF.blit(self.bgimage, (self.bgX1, self.bgY1))
         self.DISPLAYSURF.blit(self.bgimage, (self.bgX2, self.bgY2))
+
+
