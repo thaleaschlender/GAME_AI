@@ -18,8 +18,8 @@ FramePerSec = pygame.time.Clock()
 # Other Variables for use in the program
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-SCREEN_WIDTH = 400
-SCREEN_HEIGHT = 500
+SCREEN_WIDTH = 500
+SCREEN_HEIGHT = 700
 SPEED = 5
 SCORE = 0
 
@@ -31,7 +31,7 @@ game_over = font.render("Game Over", True, WHITE)
 # Create a white screen
 DISPLAYSURF = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
 DISPLAYSURF.fill(WHITE)
-pygame.display.set_caption("Game")
+pygame.display.set_caption("Group 15")
 
 
 # Setting up Sprites
@@ -39,7 +39,7 @@ P1 = Player(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 E1 = Obstacle(SCREEN_WIDTH,SCREEN_HEIGHT,SPEED)
 
-back_ground = Background(DISPLAYSURF)
+back_ground = Background(SCREEN_WIDTH,SCREEN_HEIGHT,DISPLAYSURF)
 
 # Creating Sprites Groups
 obstacles = pygame.sprite.Group()

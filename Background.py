@@ -3,9 +3,10 @@ import pygame
 
 class Background():
 
-    def __init__(self, DISPLAYSURF):
+    def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT, DISPLAYSURF):
 
         self.bgimage = pygame.image.load('background.png')
+        self.bgimage = pygame.transform.scale(self.bgimage, (SCREEN_WIDTH,SCREEN_HEIGHT))
         self.rectBGimg = self.bgimage.get_rect()
 
         self.bgY1 = 0
