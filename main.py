@@ -2,6 +2,7 @@
 import pygame, sys
 from pygame.locals import *
 import time
+import random
 
 # Import other classes
 from Background import Background
@@ -37,21 +38,20 @@ pygame.display.set_caption("Group 15")
 # Setting up Sprites
 P1 = Player(SCREEN_WIDTH, SCREEN_HEIGHT)
 
-E1 = Obstacle(SCREEN_WIDTH,SCREEN_HEIGHT,SPEED)
-
 back_ground = Background(SCREEN_WIDTH,SCREEN_HEIGHT,DISPLAYSURF)
 
 # Creating Sprites Groups
 obstacles = pygame.sprite.Group()
-obstacles.add(E1)
 
 all_sprites = pygame.sprite.Group()
 all_sprites.add(P1)
-all_sprites.add(E1)
 
 # Adding a new User event: how often to look for user event?
 INC_SPEED = pygame.USEREVENT + 1
 pygame.time.set_timer(INC_SPEED, 1000)
+
+SPAWN_OBSTACLE = pygame.USEREVENT + 2
+pygame.time.set_timer(SPAWN_OBSTACLE, 2500)
 
 # Game Loop
 while True:
@@ -60,6 +60,15 @@ while True:
     for event in pygame.event.get():
         if event.type == INC_SPEED:
             SPEED += 0.5
+        elif event.type == SPAWN_OBSTACLE:
+            gap_center = random.choice([50, 150, 250, 350, 450])
+            new_obstacle_left = Obstacle(SCREEN_WIDTH, SCREEN_HEIGHT, SPEED, gap_center, 'left')
+            new_obstacle_right = Obstacle(SCREEN_WIDTH, SCREEN_HEIGHT, SPEED, gap_center, 'right')
+            obstacles.add(new_obstacle_left)
+            obstacles.add(new_obstacle_right)
+            all_sprites.add(new_obstacle_left)
+            all_sprites.add(new_obstacle_right)
+
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
@@ -73,9 +82,15 @@ while True:
     DISPLAYSURF.blit(scores, (10, 10))
 
     # Moves and Re-draws all Sprites
+    all_sprites.update()
     for entity in all_sprites:
         DISPLAYSURF.blit(entity.image, entity.rect)
-        entity.move()
+
+    # Check if any obstacle is OOB and if so kill and delete it
+    for obstacle in obstacles:
+        if obstacle.out_of_bounds:
+            obstacle.kill()
+            del obstacle
 
     # To be run if collision occurs between Player and Obstacle
     if pygame.sprite.spritecollideany(P1, obstacles):

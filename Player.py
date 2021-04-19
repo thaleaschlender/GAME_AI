@@ -12,9 +12,9 @@ class Player(pygame.sprite.Sprite):
         #self.image.fill((0,0,255))
         self.image = pygame.image.load("bird.png")
         self.surf = pygame.Surface((self.width, self.height))
-        self.rect = self.surf.get_rect(center=(SCREEN_WIDTH/2, (SCREEN_HEIGHT/2)))
+        self.rect = self.surf.get_rect(center=(SCREEN_WIDTH/2, (SCREEN_HEIGHT - 75)))
 
-    def move(self):
+    def update(self):
         pressed_keys = pygame.key.get_pressed()
 
 
