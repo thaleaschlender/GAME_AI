@@ -14,7 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.surf = pygame.Surface((self.width, self.height))
         self.rect = self.surf.get_rect(center=(SCREEN_WIDTH/2, (SCREEN_HEIGHT - 75)))
 
-    def update(self):
+    def move(self):
         pressed_keys = pygame.key.get_pressed()
 
 
