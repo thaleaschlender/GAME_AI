@@ -3,10 +3,10 @@ import pygame
 
 class Background():
 
-    def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT, DISPLAYSURF):
+    def __init__(self, DISPLAYSURF):
 
         self.bgimage = pygame.image.load('background.png')
-        self.bgimage = pygame.transform.scale(self.bgimage, (SCREEN_WIDTH,SCREEN_HEIGHT))
+        self.bgimage = pygame.transform.scale(self.bgimage, DISPLAYSURF.get_size())
         self.rectBGimg = self.bgimage.get_rect()
 
         self.bgY1 = 0
@@ -28,7 +28,9 @@ class Background():
         if self.bgY2 >= self.rectBGimg.height:
             self.bgY2 = -self.rectBGimg.height
 
-    def render(self):
+        self.draw()
+
+    def draw(self):
         self.DISPLAYSURF.blit(self.bgimage, (self.bgX1, self.bgY1))
         self.DISPLAYSURF.blit(self.bgimage, (self.bgX2, self.bgY2))
 

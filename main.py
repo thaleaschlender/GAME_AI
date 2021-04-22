@@ -84,17 +84,17 @@ def check_coin_collision(player, coins, score):
         
 
 # Setting up Sprites
-P1 = Player(SCREEN_WIDTH, SCREEN_HEIGHT) #defines the player object
+P1 = Player(DISPLAYSURF) #defines the player object
 
-E1 = Obstacle(SCREEN_WIDTH, SCREEN_HEIGHT, speed, 40, 70, 0) #defines the original obstacles object spawing when we enter a new "screen scene" in the game
+E1 = Obstacle(DISPLAYSURF, speed, 40, 70, 0) #defines the original obstacles object spawing when we enter a new "screen scene" in the game
 
 #E2 = Obstacle(SCREEN_WIDTH,SCREEN_HEIGHT/2,SPEED) #obstacle that could be used for spawning random obstacles (e.g. vortex)
 
-E3 = Obstacle(SCREEN_WIDTH, SCREEN_HEIGHT, speed, 405, 50, -350)
+E3 = Obstacle(DISPLAYSURF, speed, 405, 50, -350)
 
-C1 = Coin(SCREEN_WIDTH, SCREEN_HEIGHT, speed, 20, 20, 0)
+C1 = Coin(DISPLAYSURF, speed, 20, 20, 0)
 
-back_ground = Background(SCREEN_WIDTH, SCREEN_HEIGHT, DISPLAYSURF) #defines the background object
+back_ground = Background(DISPLAYSURF) #defines the background object
 
 # Creating Sprites Groups
 obstacles = pygame.sprite.Group()
@@ -128,7 +128,6 @@ while True:
             sys.exit()
 
     back_ground.update()
-    back_ground.render()
 
     # Display the score
     display_score(score)
@@ -140,10 +139,7 @@ while True:
     score = check_coin_collision(P1, coins, score)
     
     # Moves and Re-draws all Sprites
-    for entity in all_sprites:
-        DISPLAYSURF.blit(entity.image, entity.rect)
-        entity.move()
-
+    all_sprites.update()
 
     pygame.display.update()
     FramePerSec.tick(FPS)
