@@ -1,22 +1,20 @@
 import pygame
 from pygame.locals import *
-#extends from the sprite class
-class Player(pygame.sprite.Sprite):
-    def __init__(self, DISPLAYSURF):
+
+class VirtualPlayer(pygame.sprite.Sprite):
+    """Virtual parent class of player that has all the same variables and functions
+    except anything required with drawing to screen."""
+    def __init__(self, DISPLAYSURF, center):
         super().__init__()
         self.DISPLAYSURF = DISPLAYSURF
         self.SCREEN_WIDTH, self.SCREEN_HEIGHT = self.DISPLAYSURF.get_size()
-        #set appearence
-        self.width = 50; self.height = 76
-        #self.image = pygame.Surface([self.width, self.height])
-        #self.image.fill((0,0,255))
-        self.image = pygame.image.load("bird.png")
+
+        self.width = 50
+        self.height = 76
         self.surf = pygame.Surface((self.width, self.height))
-        self.rect = self.surf.get_rect(center=(self.SCREEN_WIDTH/2, (self.SCREEN_HEIGHT - 75)))
 
+    #updates obstacle for exactly one tick
     def update(self):
-        self.draw()
-
         pressed_keys = pygame.key.get_pressed()
 
         if self.rect.left > 0:
@@ -25,6 +23,23 @@ class Player(pygame.sprite.Sprite):
         if self.rect.right < self.SCREEN_WIDTH:
             if pressed_keys[K_RIGHT]:
                 self.rect.move_ip(5, 0)
+        
+
+#extends from the sprite class
+class Player(VirtualPlayer):
+    def __init__(self, DISPLAYSURF):
+        super().__init__(DISPLAYSURF, (0, 0))
+        self.image = pygame.image.load("bird.png")
+        self.rect = self.surf.get_rect(center=(self.SCREEN_WIDTH/2, (self.SCREEN_HEIGHT - 75)))
+
+    def update(self):
+        self.draw()
+        super().update()
 
     def draw(self):
-        self.DISPLAYSURF.blit(self.image, self.rect)
+        self.DISPLAYSURF.blit(self.image, self.rect)        
+
+    #return virtualcopy of self for gamestate
+    def get_virtual_copy():
+        new_player = VirtualPlayer(self.DISPLAYSURF, self.rect.center)
+        return new_player

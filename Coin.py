@@ -2,23 +2,21 @@ import random
 
 import pygame
 
-
-class Coin(pygame.sprite.Sprite):
-    def __init__(self, DISPLAYSURF, SPEED, width, height, height_position): #initalisitation of an obstacle object with its width, height and height_position as parameters
+class VirtualCoin(pygame.sprite.Sprite):
+    """Virtual parent class of coin that has all the same variables and functions
+    except anything required with drawing to screen."""
+    def __init__(self, DISPLAYSURF, speed, width, height, center):
         super().__init__()
-        #Add appearence
-        self.image = pygame.Surface([width, height])
-        self.image.fill((255,255,0))
-        self.surf = pygame.Surface((width, height))
         self.DISPLAYSURF = DISPLAYSURF
         self.SCREEN_WIDTH, self.SCREEN_HEIGHT = self.DISPLAYSURF.get_size()
-        self.SPEED = SPEED
-        self.rect = self.surf.get_rect(center=(random.randint(40, self.SCREEN_WIDTH - 40)
-                                               , height_position))
+        self.speed = speed
 
+        self.surf = pygame.Surface((width, height))
+        self.rect = self.surf.get_rect(center=center)
+
+    #updates object exactly one tick
     def update(self):
-        self.draw()
-        self.rect.move_ip(0, self.SPEED)
+        self.rect.move_ip(0, self.speed)
         if (self.rect.top > self.SCREEN_HEIGHT):
             self.resetToTop()
 
@@ -26,5 +24,27 @@ class Coin(pygame.sprite.Sprite):
         self.rect.top = 0
         self.rect.center = (random.randint(40, self.SCREEN_WIDTH - 40), 0)
 
+        
+
+class Coin(VirtualCoin):
+    def __init__(self, DISPLAYSURF, speed, width, height, height_position): #initalisitation of an obstacle object with its width, height and height_position as parameters
+        super().__init__(DISPLAYSURF, speed, width, height, (0, height_position))
+        #Add appearence
+        self.image = pygame.Surface([width, height])
+        self.image.fill((255,255,0))
+
+        width_position = random.randint(40, self.SCREEN_WIDTH - 40)
+        self.rect.centerx = width_position
+
+    def update(self):
+        self.draw()
+        super().update()  
+
     def draw(self):
         self.DISPLAYSURF.blit(self.image, self.rect)    
+
+    #return virtualcopy of self for gamestate
+    def get_virtual_copy():
+        new_player = VirtualCoin(self.DISPLAYSURF, self.speed, 
+                        self.surf.get_width(), self.surf.get_height(), self.rect.center)
+        return new_player
