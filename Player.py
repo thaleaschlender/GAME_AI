@@ -1,5 +1,9 @@
 import pygame
+import random
 from pygame.locals import *
+
+wind_timer = 100
+random_winds = random.randint(-1, 1)
 
 class VirtualPlayer(pygame.sprite.Sprite):
     """Virtual parent class of player that has all the same variables and functions
@@ -8,14 +12,26 @@ class VirtualPlayer(pygame.sprite.Sprite):
         super().__init__()
         self.DISPLAYSURF = DISPLAYSURF
         self.SCREEN_WIDTH, self.SCREEN_HEIGHT = self.DISPLAYSURF.get_size()
-
         self.width = 50
         self.height = 76
         self.surf = pygame.Surface((self.width, self.height))
+        self.timing = wind_timer
+        self.random_winds = random.randint(-2, 2)
 
     #updates obstacle for exactly one tick
     def update(self):
         pressed_keys = pygame.key.get_pressed()
+
+        print(self.timing)
+
+        if self.timing == wind_timer:
+            self.random_winds = random.randint(-1, 1)
+
+        self.rect.move_ip(self.random_winds, 0)
+        self.timing = self.timing - 1
+
+        if self.timing == 0:
+            self.timing = wind_timer
 
         if self.rect.left > 0:
             if pressed_keys[K_LEFT]:
