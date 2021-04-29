@@ -75,10 +75,10 @@ def check_coin_collision(player, coins, score):
     # Find the collided coin
     collidedCoin = pygame.sprite.spritecollideany(P1, coins)
     # Check if collided with any coins
-    if collidedCoin != None:
+    if collidedCoin != None and collidedCoin.visible:
         # Increase the score and reset coin to the top
         score+=1
-        collidedCoin.resetToTop()
+        collidedCoin.setVisible(False)
         
     return score
         
@@ -92,7 +92,15 @@ E1 = Obstacle(DISPLAYSURF, speed, 40, 70, 0) #defines the original obstacles obj
 
 E3 = Obstacle(DISPLAYSURF, speed, 405, 50, -350)
 
-C1 = Coin(DISPLAYSURF, speed, 20, 20, 0)
+# Create coins
+C1 = Coin(DISPLAYSURF, speed, 20, 20, 700)
+#C2 = Coin(DISPLAYSURF, speed, 20, 20, -200)
+#C3 = Coin(DISPLAYSURF, speed, 20, 20, -400)
+#C4 = Coin(DISPLAYSURF, speed, 20, 20, -600)
+C1.setObstacles(E3, E1)
+#C2.setObstacles(E3, E1)
+#C3.setObstacles(E3, E1)
+#C4.setObstacles(E3, E1)
 
 back_ground = Background(DISPLAYSURF) #defines the background object
 
@@ -104,6 +112,9 @@ obstacles.add(E3)
 
 coins = pygame.sprite.Group()
 coins.add(C1)
+#coins.add(C2)
+#coins.add(C3)
+#coins.add(C4)
 
 all_sprites = pygame.sprite.Group()
 all_sprites.add(P1)
@@ -111,6 +122,9 @@ all_sprites.add(E1)
 #all_sprites.add(E2)
 all_sprites.add(E3)
 all_sprites.add(C1)
+#all_sprites.add(C2)
+#all_sprites.add(C3)
+#all_sprites.add(C4)
 
 # Adding a new User event: how often to look for user event?
 INC_SPEED = pygame.USEREVENT + 1
