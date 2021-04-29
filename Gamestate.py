@@ -2,8 +2,7 @@ import pygame
 from Obstacle import Obstacle, VirtualObstacle
 from Player import Player, VirtualPlayer
 from Coin import Coin, VirtualCoin
-
-LOSS_SCORE = -1000000
+import random
 
 class Gamestate():
 	"""docstring for Gamestate"""
@@ -28,8 +27,18 @@ class Gamestate():
 				self.environment_sprites.add(virtual_sprite)
 				if isinstance(virtual_sprite, VirtualObstacle):
 					self.obstacles.add(virtual_sprite)
+					
+					#save obstacle and orientation to set for coin
+					if virtual_sprite.surf.get_width() > virtual_sprite.surf.get_height(): 
+						wide_obstacle = virtual_sprite
+					else:
+						tall_obstacle = virtual_sprite
 				elif isinstance(virtual_sprite, VirtualCoin):
 					self.coins.add(virtual_sprite)
+
+		for coin in self.coins:
+			coin.setObstacles(tall_obstacle, wide_obstacle)
+			coin.rect.centerx = 250
 
 
 	def check_coin_collision(self):
@@ -42,6 +51,9 @@ class Gamestate():
 		for sprite in self.environment_sprites:
 			sprite.kill()
 		self.player.kill()
+
+	def is_gameover(self):
+		return self.gameover
 
 	def get_score(self):
 		return self.score
@@ -83,7 +95,6 @@ class Gamestate():
 				
 			score = self.check_coin_collision()
 			
-			# Moves and Re-draws all Sprites
 			self.environment_sprites.update()
 			self.player.move(action)
 
@@ -91,68 +102,42 @@ class Gamestate():
 		else:
 			print("Gamestate already in gameover")
 
-DISPLAYSURF = pygame.display.set_mode((500, 700))
-score = 0
-speed = 5
 
-P1 = Player(DISPLAYSURF) #defines the player object
-E1 = Obstacle(DISPLAYSURF, speed, 40, 70, 0) #defines the original obstacles object spawing when we enter a new "screen scene" in the game
-#E2 = Obstacle(SCREEN_WIDTH,SCREEN_HEIGHT/2,SPEED) #obstacle that could be used for spawning random obstacles (e.g. vortex)
-E3 = Obstacle(DISPLAYSURF, speed, 405, 50, -350)
-C1 = Coin(DISPLAYSURF, speed, 20, 20, 0)
 
-all_sprites = pygame.sprite.Group()
-all_sprites.add(P1)
-all_sprites.add(E1)
-#all_sprites.add(E2)
-all_sprites.add(E3)
-all_sprites.add(C1)
 
-state = Gamestate(DISPLAYSURF, speed, score, 975, all_sprites)
+#DO NO DELETE MIGHT BE USEFUL LATER
+#Code for testing the gamestate class
 
-player = state.get_player()
-obstacles = state.get_obstacles()
-coins = state.get_coins()
-print("Time: {}".format(state.time))
-print("Speed: {}".format(state.speed))
-print("Player:{} \nObstacles: {} \nCoins:{} \n".format(player, obstacles, coins))
+# DISPLAYSURF = pygame.display.set_mode((500, 700))
+# score = 0
+# speed = 5
 
-state.advance(1)
-player = state.get_player()
-obstacles = state.get_obstacles()
-coins = state.get_coins()
-print("Time: {}".format(state.time))
-print("Speed: {}".format(state.speed))
-print("Player:{} \nObstacles: {} \nCoins:{} \n".format(player, obstacles, coins))
+# P1 = Player(DISPLAYSURF) #defines the player object
+# E1 = Obstacle(DISPLAYSURF, speed, 40, 70, 0) #defines the original obstacles object spawing when we enter a new "screen scene" in the game
+# #E2 = Obstacle(SCREEN_WIDTH,SCREEN_HEIGHT/2,SPEED) #obstacle that could be used for spawning random obstacles (e.g. vortex)
+# E3 = Obstacle(DISPLAYSURF, speed, 405, 50, -350)
+# C1 = Coin(DISPLAYSURF, speed, 20, 20, 0)
 
-state.advance(2)
-player = state.get_player()
-obstacles = state.get_obstacles()
-coins = state.get_coins()
-print("Time: {}".format(state.time))
-print("Speed: {}".format(state.speed))
-print("Player:{} \nObstacles: {} \nCoins:{} \n".format(player, obstacles, coins))
+# all_sprites = pygame.sprite.Group()
+# all_sprites.add(P1)
+# all_sprites.add(E1)
+# #all_sprites.add(E2)
+# all_sprites.add(E3)
+# all_sprites.add(C1)
 
-state.advance(0)
-player = state.get_player()
-obstacles = state.get_obstacles()
-coins = state.get_coins()
-print("Time: {}".format(state.time))
-print("Speed: {}".format(state.speed))
-print("Player:{} \nObstacles: {} \nCoins:{} \n".format(player, obstacles, coins))
+# state = Gamestate(DISPLAYSURF, speed, score, 975, all_sprites)
 
-state.advance(1)
-player = state.get_player()
-obstacles = state.get_obstacles()
-coins = state.get_coins()
-print("Time: {}".format(state.time))
-print("Speed: {}".format(state.speed))
-print("Player:{} \nObstacles: {} \nCoins:{} \n".format(player, obstacles, coins))
+# actions = [0,1,2]
 
-state.advance(1)
-player = state.get_player()
-obstacles = state.get_obstacles()
-coins = state.get_coins()
-print("Time: {}".format(state.time))
-print("Speed: {}".format(state.speed))
-print("Player:{} \nObstacles: {} \nCoins:{} \n".format(player, obstacles, coins))
+# for i in range(5000):
+# 	if state.is_gameover():
+# 		print("Game over!")
+# 		break
+# 	player = state.get_player()
+# 	obstacles = state.get_obstacles()
+# 	coins = state.get_coins()
+# 	print("Time: {}".format(state.time))
+# 	print("Score: {}".format(state.score))
+# 	print("Player: {} \nObstacles: {} \nCoins:{} \n".format(player, obstacles, coins))
+# 	# state.advance(random.choice(actions))
+# 	state.advance(0)

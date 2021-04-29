@@ -17,8 +17,6 @@ class VirtualCoin(pygame.sprite.Sprite):
         self.surf = pygame.Surface((width, height))
         self.rect = self.surf.get_rect(center=center)
 
-
-
     #updates object exactly one tick
     def update(self):
         self.rect.move_ip(0, self.speed)
