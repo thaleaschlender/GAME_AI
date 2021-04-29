@@ -25,7 +25,7 @@ class Background():
 
         self.DISPLAYSURF = DISPLAYSURF
 
-        #clouds via perlin noise
+        #clouds via perlin noise!
         cloud_pixels = self.generate_fractal_noise_2d(shape=(self.rectBGimg.width+100,self.rectBGimg.height+100 ), res=(5,5), octaves=4, persistence=0.5)
         for kx in range(self.rectBGimg.width):
             for ky in range(self.rectBGimg.height ):
