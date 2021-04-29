@@ -85,7 +85,7 @@ class Coin(VirtualCoin):
         self.DISPLAYSURF.blit(self.image, self.rect)    
 
     #return virtualcopy of self for gamestate
-    def get_virtual_copy():
+    def get_virtual_copy(self):
         new_player = VirtualCoin(self.DISPLAYSURF, self.speed, 
                         self.surf.get_width(), self.surf.get_height(), self.rect.center)
         return new_player
