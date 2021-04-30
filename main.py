@@ -9,6 +9,7 @@ from Background import Background
 from Obstacle import Obstacle
 from Player import Player
 from Coin import Coin
+from RandomPlayer import RandomPlayer
 
 pygame.init()
 
@@ -84,7 +85,10 @@ def check_coin_collision(player, coins, score):
         
 
 # Setting up Sprites
-P1 = Player(DISPLAYSURF) #defines the player object
+
+# Create the player
+P1 = Player(DISPLAYSURF)
+#P1 = RandomPlayer(DISPLAYSURF, [1,2])
 
 E1 = Obstacle(DISPLAYSURF, speed, 40, 70, 0) #defines the original obstacles object spawing when we enter a new "screen scene" in the game
 
