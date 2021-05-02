@@ -2,8 +2,8 @@ import pygame
 import random
 from pygame.locals import *
 
-wind_timer = 100
-random_winds = random.randint(-1, 1)
+wind_timer = 100 #variables used to determine the value of the wind timer
+random_winds = random.randint(-1, 1) #intialises the first random wind direction
 
 class VirtualPlayer(pygame.sprite.Sprite):
     """Virtual parent class of player that has all the same variables and functions
