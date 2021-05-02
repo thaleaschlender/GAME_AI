@@ -12,9 +12,9 @@ class VirtualPlayer(pygame.sprite.Sprite):
         super().__init__()
         self.DISPLAYSURF = DISPLAYSURF
         self.SCREEN_WIDTH, self.SCREEN_HEIGHT = self.DISPLAYSURF.get_size()
-        self.width = 50
-        self.height = 76
-        self.surf = pygame.Surface((self.width, self.height))
+        self.width = 50 #defines the width of the player
+        self.height = 76 #defines the height of the player
+        self.surf = pygame.Surface((self.width, self.height)) #defines the player as a "surfable" element in the game
         self.timing = wind_timer #timing variable is used to let each wind occur for the amount of time defined by wind_timer
         self.random_winds = random.randint(-2, 2) #creates a random wind variable representing the strength of the wind and the direction
 
@@ -22,21 +22,21 @@ class VirtualPlayer(pygame.sprite.Sprite):
     def update(self):
         pressed_keys = pygame.key.get_pressed()
 
-        print(self.timing)
+        #print(self.timing) #used to print the value of the wind timer for troubleshooting purposes
 
-        if self.timing == wind_timer:
+        if self.timing == wind_timer: #if the timer of the winds is at the start, change the direction (Left, right or no wind, thus -1,0,1)
             self.random_winds = random.randint(-1, 1)
 
-        self.rect.move_ip(self.random_winds, 0)
+        self.rect.move_ip(self.random_winds, 0) #moves the player horizontally, either to the left, right, or no movement according to the value determined by random_winds
         self.timing = self.timing - 1
 
-        if self.timing == 0:
+        if self.timing == 0: #if the timer used for the wind reaches 0 go back to the value defined by wind_timer
             self.timing = wind_timer
 
-        if self.rect.left > 0:
+        if self.rect.left > 0: #condition to make the player go left when using the keyboard arrows
             if pressed_keys[K_LEFT]:
                 self.rect.move_ip(-5, 0)
-        if self.rect.right < self.SCREEN_WIDTH:
+        if self.rect.right < self.SCREEN_WIDTH: #condition to make the player go right when using the keyboard arrows
             if pressed_keys[K_RIGHT]:
                 self.rect.move_ip(5, 0)
         
