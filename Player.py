@@ -15,8 +15,8 @@ class VirtualPlayer(pygame.sprite.Sprite):
         self.width = 50
         self.height = 76
         self.surf = pygame.Surface((self.width, self.height))
-        self.timing = wind_timer
-        self.random_winds = random.randint(-2, 2)
+        self.timing = wind_timer #timing variable is used to let each wind occur for the amount of time defined by wind_timer
+        self.random_winds = random.randint(-2, 2) #creates a random wind variable representing the strength of the wind and the direction
 
     #updates obstacle for exactly one tick
     def update(self):
