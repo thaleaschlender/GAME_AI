@@ -30,14 +30,14 @@ class Gamestate():
 					
 					#save obstacle and orientation to set for coin
 					if virtual_sprite.surf.get_width() > virtual_sprite.surf.get_height(): 
-						wide_obstacle = virtual_sprite
+						self.wide_obstacle = virtual_sprite
 					else:
-						tall_obstacle = virtual_sprite
+						self.tall_obstacle = virtual_sprite
 				elif isinstance(virtual_sprite, VirtualCoin):
 					self.coins.add(virtual_sprite)
 
 		for coin in self.coins:
-			coin.setObstacles(tall_obstacle, wide_obstacle)
+			coin.setObstacles(self.tall_obstacle, self.wide_obstacle)
 			coin.rect.centerx = 250
 
 
@@ -65,6 +65,14 @@ class Gamestate():
 			obstacle_list.append(obstacle.rect.center)
 		return obstacle_list
 
+	#return height, left and right of wide obstacle
+	def get_wide_obstacle(self):
+		return [self.wide_obstacle.rect.centery, self.wide_obstacle.rect.left, self.wide_obstacle.rect.right]
+
+	#return height, left and right of tall obstacle
+	def get_tall_obstacle(self):
+		return [self.tall_obstacle.rect.centery, self.tall_obstacle.rect.left, self.tall_obstacle.rect.right]
+
 	#returns list with centers (x, y) of all coins
 	def get_coins(self):
 		coin_list = []
@@ -75,6 +83,9 @@ class Gamestate():
 	#returns center (x, y) of player
 	def get_player(self):
 		return self.player.rect.center
+
+	def set_player(self, virtualplayer):
+		self.player = virtualplayer
 
 	"""
 	Advances gamestate exactly one tick, assumes 60 FPS for events
