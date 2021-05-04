@@ -11,7 +11,7 @@ class RandomPlayer(Player):
     def act(self):
         return random.choice(self.actions)
     
-    def update(self):
+    def update(self, state):
         action = self.act()
         self.move(action)
         self.draw()

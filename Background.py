@@ -34,7 +34,7 @@ class Background():
                 self.bgimage.set_at((kx, ky), (int(c*255), col[1]+(int(c*64)), col[2]+(int(c*5))))
 
     def update(self):
-        print(self.bgY1, self.bgY2)
+        #print(self.bgY1, self.bgY2)
         self.bgY1 += self.moving_speed
         self.bgY2 += self.moving_speed
         if self.bgY1 >= self.rectBGimg.height:

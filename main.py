@@ -10,6 +10,9 @@ from Obstacle import Obstacle
 from Player import Player
 from Coin import Coin
 from RandomPlayer import RandomPlayer
+from SurvivingPlayer import SurvivingPlayer
+from Gamestate import Gamestate
+from MCTSPlayer import MCTSPlayer
 
 pygame.init()
 
@@ -82,53 +85,51 @@ def check_coin_collision(player, coins, score):
         collidedCoin.setVisible(False)
         
     return score
+
+# Check if the player has passed an obstacle and increases the score if it has.
+# Returns the score of the game
+def check_obstacle_pass(player, obstacles, score):
+    for obstacle in obstacles :
+        if (not obstacle.passed and obstacle.rect.top > player.rect.center[1]):
+            score+=1
+            obstacle.passed = True
+        
+    return score
         
 
 # Setting up Sprites
 
 # Create the player
-P1 = Player(DISPLAYSURF)
-#P1 = RandomPlayer(DISPLAYSURF, [1,2])
+#P1 = Player(DISPLAYSURF)
+#P1 = RandomPlayer(DISPLAYSURF, [0,1,2])
+#P1 = SurvivingPlayer(DISPLAYSURF, [0,1,2], 100)
+P1 = MCTSPlayer(DISPLAYSURF, [0,1,2], 100)
 
 E1 = Obstacle(DISPLAYSURF, speed, 40, 70, 0) #defines the original obstacles object spawing when we enter a new "screen scene" in the game
-
-#E2 = Obstacle(SCREEN_WIDTH,SCREEN_HEIGHT/2,SPEED) #obstacle that could be used for spawning random obstacles (e.g. vortex)
 
 E3 = Obstacle(DISPLAYSURF, speed, 405, 50, -350)
 
 # Create coins
 C1 = Coin(DISPLAYSURF, speed, 20, 20, 700)
-#C2 = Coin(DISPLAYSURF, speed, 20, 20, -200)
-#C3 = Coin(DISPLAYSURF, speed, 20, 20, -400)
-#C4 = Coin(DISPLAYSURF, speed, 20, 20, -600)
+
 C1.setObstacles(E3, E1)
-#C2.setObstacles(E3, E1)
-#C3.setObstacles(E3, E1)
-#C4.setObstacles(E3, E1)
 
 back_ground = Background(DISPLAYSURF) #defines the background object
 
 # Creating Sprites Groups
 obstacles = pygame.sprite.Group()
 obstacles.add(E1)
-#obstacles.add(E2)
 obstacles.add(E3)
 
 coins = pygame.sprite.Group()
 coins.add(C1)
-#coins.add(C2)
-#coins.add(C3)
-#coins.add(C4)
 
 all_sprites = pygame.sprite.Group()
-all_sprites.add(P1)
 all_sprites.add(E1)
-#all_sprites.add(E2)
 all_sprites.add(E3)
 all_sprites.add(C1)
-#all_sprites.add(C2)
-#all_sprites.add(C3)
-#all_sprites.add(C4)
+
+
 
 # Adding a new User event: how often to look for user event?
 INC_SPEED = pygame.USEREVENT + 1
@@ -155,9 +156,12 @@ while True:
         end_game(all_sprites, score)
         
     score = check_coin_collision(P1, coins, score)
+    #score = check_obstacle_pass(P1, obstacles, score)
     
     # Moves and Re-draws all Sprites
     all_sprites.update()
+    state = Gamestate(DISPLAYSURF, speed, score, 975, all_sprites, P1, False)
+    P1.update(state)
 
     pygame.display.update()
     FramePerSec.tick(FPS)
