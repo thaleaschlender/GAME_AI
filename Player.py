@@ -45,12 +45,12 @@ class VirtualPlayer(pygame.sprite.Sprite):
 class Player(VirtualPlayer):
     def __init__(self, DISPLAYSURF):
         super().__init__(DISPLAYSURF, (0, 0))
-        self.image = pygame.image.load("bird.png")
-        self.rect = self.surf.get_rect(center=(self.SCREEN_WIDTH/2, (self.SCREEN_HEIGHT - 75)))
+        self.image = pygame.image.load("bird.png") #determines what sprite is used as the player
+        self.rect = self.surf.get_rect(center=(self.SCREEN_WIDTH/2, (self.SCREEN_HEIGHT - 75))) #determines the position of the player according to its center
 
     def update(self):
         self.draw()
-        super().update()
+        super().update() #updates the position of the player on the scene
 
     def draw(self):
         self.DISPLAYSURF.blit(self.image, self.rect)        
