@@ -14,7 +14,7 @@ class VirtualPlayer(pygame.sprite.Sprite):
         self.SCREEN_WIDTH, self.SCREEN_HEIGHT = self.DISPLAYSURF.get_size()
         self.width = 50 #defines the width of the player
         self.height = 76 #defines the height of the player
-        self.surf = pygame.Surface((self.width, self.height)) #defines the player as a "surfable" element in the game
+        self.surf = pygame.Surface((self.width, self.height)) #defines the player as a surface element in the game
         self.timing = wind_timer #timing variable is used to let each wind occur for the amount of time defined by wind_timer
         self.random_winds = random.randint(-2, 2) #creates a random wind variable representing the strength of the wind and the direction
 
