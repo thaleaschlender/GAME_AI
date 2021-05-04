@@ -16,6 +16,9 @@ class Gamestate():
 		self.coins = pygame.sprite.Group()
 		self.gameover = False
 
+		self.fill_spritegroups(sprite_group)
+
+	def fill_spritegroups(self, sprite_group):
 		for sprite in sprite_group:
 			virtual_sprite = sprite.get_virtual_copy()
 			
@@ -39,7 +42,6 @@ class Gamestate():
 		for coin in self.coins:
 			coin.setObstacles(self.tall_obstacle, self.wide_obstacle)
 			coin.rect.centerx = 250
-
 
 	def check_coin_collision(self):
 		collided_coin = pygame.sprite.spritecollideany(self.player, self.coins)
@@ -86,6 +88,16 @@ class Gamestate():
 
 	def set_player(self, virtualplayer):
 		self.player = virtualplayer
+
+	def copy(self):
+		all_sprites = pygame.sprite.Group()
+		all_sprites.add(self.player)
+		for obstacle in self.obstacles:
+			all_sprites.add(obstacle)
+		for coin in self.coins:
+			all_sprites.add(coin)
+
+		return Gamestate(self.DISPLAYSURF, self.speed, self.score, self.time, all_sprites)
 
 	"""
 	Advances gamestate exactly one tick, assumes 60 FPS for events

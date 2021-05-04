@@ -20,6 +20,12 @@ class VirtualObstacle(pygame.sprite.Sprite):
         if (self.rect.top > self.SCREEN_HEIGHT):
             self.rect.top = 0
             self.rect.center = (random.randint(40, self.SCREEN_WIDTH - 40), 0)
+
+    #return virtualcopy of self for gamestate
+    def get_virtual_copy(self):
+        virtual_obstacle = VirtualObstacle(self.DISPLAYSURF, self.speed, 
+                            self.surf.get_width(), self.surf.get_height(), self.rect.center)
+        return virtual_obstacle
         
 
 class Obstacle(VirtualObstacle):
@@ -40,8 +46,3 @@ class Obstacle(VirtualObstacle):
     def draw(self):
         self.DISPLAYSURF.blit(self.image, self.rect)  
 
-    #return virtualcopy of self for gamestate
-    def get_virtual_copy(self):
-        virtual_obstacle = VirtualObstacle(self.DISPLAYSURF, self.speed, 
-                            self.surf.get_width(), self.surf.get_height(), self.rect.center)
-        return virtual_obstacle
