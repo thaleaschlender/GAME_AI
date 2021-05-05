@@ -58,6 +58,13 @@ class EATrainer():
             players_living = [not state.is_gameover() for state in self.gamestates]
             any_living = any(players_living)
 
+    def mutate_agents(self):
+        for player in self.players:
+            player.mutate(0.1, 0.2)
+            print(player.get_child())
+            break
+
+
+
 trainer = EATrainer(10,100)
-trainer.run_game()
-print([player.rect.center for player in trainer.players])
+trainer.mutate_agents()
