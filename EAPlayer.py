@@ -1,6 +1,7 @@
 import numpy as np
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' #im not running it on gpu, i get it
+import keras
 from keras.layers import Dense
 from keras.models import Sequential
 import pygame
@@ -32,24 +33,25 @@ class EAPlayer(Player):
         self.brain.add(Dense(3, activation='sigmoid'))
         self.brain.compile()
 
+        self.fitness = 0.
+
 
     def update(self, state):
-
         #get all necessary input variables and normalize them based on total height and width
-        player_x = self.rect.centerx/self.SCREEN_HEIGHT
+        player_x = self.rect.centerx/self.SCREEN_WIDTH
 
         wide_obstacle = state.get_wide_obstacle()
         wide_obstacle_height = wide_obstacle[0]/self.SCREEN_HEIGHT
-        wide_obstacle_left = wide_obstacle[1]/self.SCREEN_HEIGHT
-        wide_obstacle_right = wide_obstacle[2]/self.SCREEN_HEIGHT
+        wide_obstacle_left = wide_obstacle[1]/self.SCREEN_WIDTH
+        wide_obstacle_right = wide_obstacle[2]/self.SCREEN_WIDTH
         
         tall_obstacle = state.get_tall_obstacle()
         tall_obstacle_height = tall_obstacle[0]/self.SCREEN_HEIGHT
-        tall_obstacle_left = tall_obstacle[1]/self.SCREEN_HEIGHT
-        tall_obstacle_right = tall_obstacle[2]/self.SCREEN_HEIGHT
+        tall_obstacle_left = tall_obstacle[1]/self.SCREEN_WIDTH
+        tall_obstacle_right = tall_obstacle[2]/self.SCREEN_WIDTH
         
         coin = state.get_coins()[0] #assumes one coin, will not work otherwise
-        coin_x = coin[0]/self.SCREEN_HEIGHT
+        coin_x = coin[0]/self.SCREEN_WIDTH
         coin_y = coin[1]/self.SCREEN_HEIGHT
 
         state_array = np.array([[player_x,
@@ -59,6 +61,10 @@ class EAPlayer(Player):
         prediction = np.argmax(self.brain(state_array)[0]) #select class with highest probability
         self.move(prediction)
         self.draw()
+
+        self.fitness = np.round(self.fitness+0.0005, decimals=4)
+
+        return prediction
 
     #Implementation taken from https://github.com/dmackenz/Keras-Neuro-Evolution-Trading-Bot-Skeleton/blob/master/utils/Agent.py
     def mutate(self, mutation_rate, scale):
@@ -78,7 +84,13 @@ class EAPlayer(Player):
     def set_brain_weights(self, weights):
         self.brain.set_weights(weights)
 
+    def load_brain(self, path_to_new_brain):
+    	self.brain = keras.models.load_model(path_to_new_brain)
+
     def get_child(self):
         child = EAPlayer(self.DISPLAYSURF)
         child.set_brain_weights(self.brain.get_weights())
         return child
+
+    def save(self, filename):
+    	self.brain.save('./models/'+filename)

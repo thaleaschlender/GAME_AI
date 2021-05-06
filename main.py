@@ -90,7 +90,9 @@ def check_coin_collision(player, coins, score):
 
 # Create the player
 # P1 = Player(DISPLAYSURF)
-P1 = RandomPlayer(DISPLAYSURF, [1,2])
+# P1 = RandomPlayer(DISPLAYSURF, [1,2])
+P1 = EAPlayer(DISPLAYSURF)
+P1.load_brain('./models/bestmodel_pop100_gens10_mrc1_mrw0.05_ms0.3')
 
 E1 = Obstacle(DISPLAYSURF, speed, 40, 70, 0) #defines the original obstacles object spawing when we enter a new "screen scene" in the game
 
@@ -123,7 +125,7 @@ coins.add(C1)
 #coins.add(C4)
 
 all_sprites = pygame.sprite.Group()
-all_sprites.add(P1)
+# all_sprites.add(P1)
 all_sprites.add(E1)
 #all_sprites.add(E2)
 all_sprites.add(E3)
@@ -160,6 +162,7 @@ while True:
     
     # Moves and Re-draws all Sprites
     all_sprites.update()
+    P1.update(state)
 
     pygame.display.update()
     FramePerSec.tick(FPS)

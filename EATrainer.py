@@ -3,6 +3,7 @@ import pygame, sys
 from pygame.locals import *
 import time
 import random
+import numpy as np
 
 # Import other classes
 from Background import Background
@@ -23,9 +24,6 @@ class EATrainer():
 
         self.pop_size = pop_size
         self.generations = generations
-
-        self.init_gamestates()
-        self.init_players()
 
     def init_gamestates(self):
         self.gamestates = list()
@@ -48,23 +46,88 @@ class EATrainer():
             self.players.append(EAPlayer(self.DISPLAYSURF))
 
     def run_game(self):
-        players_living = [not state.is_gameover() for state in self.gamestates]#list of booleans where players_living[i] is True if player i is living
-        any_living = any(players_living)
+        living = self.pop_size
 
-        while any_living:
+
+        while living > 0:
+            #Advance any living players
             for i in range(self.pop_size):
-                action = self.players[i].update(self.gamestates[i])
-                self.gamestates[i].advance(action)
-            players_living = [not state.is_gameover() for state in self.gamestates]
-            any_living = any(players_living)
+                if not self.gamestates[i].is_gameover():
+                    action = self.players[i].update(self.gamestates[i])
+                    self.gamestates[i].advance(action)
+                    if self.gamestates[i].is_gameover():
+                        living -= 1
+                        if living%25 == 0:
+                            print('Players left: {}'.format(living))
 
-    def mutate_agents(self):
+                        self.players[i].fitness += self.gamestates[i].get_score()*5
+
+    def normalize_fitness(self):
+        scores = list()
         for player in self.players:
-            player.mutate(0.1, 0.2)
-            print(player.get_child())
-            break
+            scores.append(player.fitness)
+
+        normalized_scores = scores/np.linalg.norm(scores)
+        for i in range(self.pop_size):
+            self.players[i].fitness = normalized_scores[i]
+
+    #Select one player and return its index, higher fitness means higher chance of getting picked
+    #Assumes a reversely sorted playerlist
+    def select_one(self):
+        index = 0
+        total = 0
+
+        random = np.random.random()
+        while total < random and index <= self.pop_size:
+            total += self.players[index].fitness
+            index += 1
+
+        return index-1
+
+    def evolve(self, mutation_rate_child=0.5, mutation_rate_weights=0.1, scale=0.2):
+        self.players.sort(key=lambda x: x.fitness, reverse=True)
+        print('Best performing player has fitness: {}'.format(self.players[0].fitness))
+        self.normalize_fitness()
+
+        
+        new_players = list()
+        for _ in range(self.pop_size):
+            #Selecte a player and get its child
+            selected_player = self.players[self.select_one()]
+            child = selected_player.get_child()
+
+            #Mutate child based on child mutation rate, then add it to the new players
+            if np.random.random() < mutation_rate_child:
+                child.mutate(mutation_rate_weights, scale)
+            new_players.append(child)
+
+        self.players = new_players
+
+    def train(self, mutation_rate_child=0.5, mutation_rate_weights=0.1, scale=0.2):
+        self.init_players()
+
+        for i in range(self.generations):
+            print('================== Gen: {} =================='.format(i+1))
+            self.init_gamestates()
+            self.run_game()
+            self.evolve(mutation_rate_child=mutation_rate_child, 
+                        mutation_rate_weights=mutation_rate_weights, 
+                        scale=scale)
+
+        #save best model
+        self.players.sort(key=lambda x: x.fitness, reverse=True)
+        self.players[0].save('bestmodel_fit{}_pop{}_gens{}_mrc{}_mrw{}_ms{}'
+                            .format(self.players[0].fitness
+                                    self.pop_size, 
+                                    self.generations,
+                                    mutation_rate_child,
+                                    mutation_rate_weights,
+                                    scale))
 
 
-
-trainer = EATrainer(10,100)
-trainer.mutate_agents()
+trainer = EATrainer(100,10)
+trainer.train(mutation_rate_child=1, mutation_rate_weights=0.05, scale=0.3)
+# trainer.init_players()
+# trainer.init_gamestates()
+# trainer.run_game()
+# trainer.select_one()
