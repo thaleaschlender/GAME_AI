@@ -29,12 +29,11 @@ class EAPlayer(Player):
 
         self.brain = Sequential()
         self.brain.add(Dense(9, activation='relu', input_shape=(9,)))
-        self.brain.add(Dense(8, activation='relu'))
+        self.brain.add(Dense(10, activation='relu'))
         self.brain.add(Dense(3, activation='sigmoid'))
         self.brain.compile()
 
         self.fitness = 0.
-
 
     def update(self, state):
         #get all necessary input variables and normalize them based on total height and width
@@ -85,7 +84,7 @@ class EAPlayer(Player):
         self.brain.set_weights(weights)
 
     def load_brain(self, path_to_new_brain):
-    	self.brain = keras.models.load_model(path_to_new_brain)
+        self.brain = keras.models.load_model(path_to_new_brain)
 
     def get_child(self):
         child = EAPlayer(self.DISPLAYSURF)
@@ -93,4 +92,4 @@ class EAPlayer(Player):
         return child
 
     def save(self, filename):
-    	self.brain.save('./models/'+filename)
+        self.brain.save('./models/'+filename)

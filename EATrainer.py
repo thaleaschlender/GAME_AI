@@ -48,7 +48,6 @@ class EATrainer():
     def run_game(self):
         living = self.pop_size
 
-
         while living > 0:
             #Advance any living players
             for i in range(self.pop_size):
@@ -106,6 +105,7 @@ class EATrainer():
     def train(self, mutation_rate_child=0.5, mutation_rate_weights=0.1, scale=0.2):
         self.init_players()
 
+        #generate new games, let players play and then evolve
         for i in range(self.generations):
             print('================== Gen: {} =================='.format(i+1))
             self.init_gamestates()
@@ -114,10 +114,12 @@ class EATrainer():
                         mutation_rate_weights=mutation_rate_weights, 
                         scale=scale)
 
-        #save best model
+        #Play games one more time to find the best
+        self.init_gamestates()
+        self.run_game()
         self.players.sort(key=lambda x: x.fitness, reverse=True)
         self.players[0].save('bestmodel_fit{}_pop{}_gens{}_mrc{}_mrw{}_ms{}'
-                            .format(self.players[0].fitness
+                            .format(np.round(self.players[0].fitness, decimals=1),
                                     self.pop_size, 
                                     self.generations,
                                     mutation_rate_child,
@@ -125,7 +127,7 @@ class EATrainer():
                                     scale))
 
 
-trainer = EATrainer(100,10)
+trainer = EATrainer(1,1)
 trainer.train(mutation_rate_child=1, mutation_rate_weights=0.05, scale=0.3)
 # trainer.init_players()
 # trainer.init_gamestates()
