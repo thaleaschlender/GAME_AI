@@ -100,9 +100,10 @@ def check_obstacle_pass(player, obstacles, score):
 # Setting up Sprites
 
 # Create the player
-P1 = Player(DISPLAYSURF)
+#P1 = Player(DISPLAYSURF)
 #P1 = RandomPlayer(DISPLAYSURF, [1,2])
-#P1 = MCTSPlayer(DISPLAYSURF, [0,1,2], 100)
+P1 = MCTSPlayer(DISPLAYSURF, [1,2], 100)
+#P1 = EAPlayer(DISPLAYSURF)
 
 E1 = Obstacle(DISPLAYSURF, speed, 40, 70, 0) #defines the original obstacles object spawing when we enter a new "screen scene" in the game
 
@@ -142,23 +143,28 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
-    state = Gamestate(DISPLAYSURF, speed, score, pygame.time.get_ticks(), all_sprites)
-    state.set_player(P1)
+
     back_ground.update()
 
     # Display the score
     display_score(score)
     
-    # To be run if collision occurs between Player and Obstacle
-    if pygame.sprite.spritecollideany(P1, obstacles):
-        end_game(all_sprites, score)
-        
+
     score = check_coin_collision(P1, coins, score)
-    #score = check_obstacle_pass(P1, obstacles, score)
+    score = check_obstacle_pass(P1, obstacles, score)
+    
+    # The State has to be created here before updating the sprites, otherwise there is mismatch by one tick
+    # when simulating players
+    state = Gamestate(DISPLAYSURF, speed, score, pygame.time.get_ticks(), all_sprites)
+    state.set_player(P1.get_virtual_copy())
     
     # Moves and Re-draws all Sprites
     all_sprites.update()
     P1.update(state)
+
+    # To be run if collision occurs between Player and Obstacle
+    if pygame.sprite.spritecollideany(P1, obstacles):
+        end_game(all_sprites, score)
 
     pygame.display.update()
     FramePerSec.tick(FPS)

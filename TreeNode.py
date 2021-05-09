@@ -4,12 +4,12 @@ from Player import Player
 from Gamestate import Gamestate
 
 # Defines how deep the tree is searched
-ROLLOUT_DEPTH = 50
+ROLLOUT_DEPTH = 70
 
 # UCT formula parameter
 K = math.sqrt(2)
 
-REPEAT_ACTIONS = 10
+REPEAT_ACTIONS = 1
 
 HUGE_NEGATIVE = -100000
 HUGE_POSITIVE = 100000
@@ -38,7 +38,7 @@ class TreeNode():
     # If possible change to time limitation instead of fixed number of iterations.
     def mcts(self):
         i = 0
-        while (i < 100):
+        while (i < 50):
             state = self.rootState.copy()
             
             # Select next node
@@ -74,12 +74,18 @@ class TreeNode():
             if (child == None) :
                 continue
             childValue = child.totValue / (child.visits + EPSILON)
-            
+
             if (childValue > bestAction):
                 bestAction = childValue
                 bestActionChildIndex = childIndex
                 
-        return self.actions[bestActionChildIndex]
+        # Advance the root state with the taken action
+        self.rootState.advance(self.actions[bestActionChildIndex])
+        # If the action kills don't move neither left or right
+        if (not self.rootState.gameover):
+            return self.actions[bestActionChildIndex]
+        
+        return 0
         
     # Expand next node in the tree
     def treePolicy(self, state):
@@ -100,12 +106,12 @@ class TreeNode():
         currentDepth = self.depth
         
         while (not self.finishRollout(state, currentDepth)):
-            action = random.choice(self.actions)
+            actionIndex = random.randint(0, len(self.actions) - 1)
             for i in range(REPEAT_ACTIONS):
                 if (state.gameover):
                     break
                 
-                state.advance(self.actions[action])
+                state.advance(self.actions[actionIndex])
                 
             currentDepth+=1
         
@@ -170,7 +176,11 @@ class TreeNode():
             
 
         state.advance(self.actions[bestAction])
-        tn = TreeNode(self, bestAction, self.actions, self.time)
+        # At root state branch into two childs, one which goes left the other goes right
+        if (self.parent == None):
+            tn = TreeNode(self, bestAction, [0,self.actions[bestAction]], self.time)
+        else:
+            tn = TreeNode(self, bestAction, self.actions, self.time)
         self.childs[bestAction] = tn
         return tn
         
@@ -191,9 +201,32 @@ class TreeNode():
     
     # Get the value of the current state
     def value(self, state):
+        
         if state.gameover:
             return HUGE_NEGATIVE + state.get_score()
+    
+        # Award bonus for going towards middle if the wide obstacle is far away or just passed
+        if (state.get_wide_obstacle()[0] < 0.33 * state.DISPLAYSURF.get_height() or
+            state.get_player()[1] > state.get_wide_obstacle()[0]):
+            return state.get_score() + self.awardCentralizedLocation(state)
+        
         return state.get_score()
+    
+    # Award bonus for going towards middle of the game space
+    def awardCentralizedLocation(self, state):
+        # Get player position
+        playerX = state.get_player()[0]
+    
+        # Get center position
+        centerX = state.DISPLAYSURF.get_width() / 2
+        
+        # The maximum difference possible to center
+        maxDif = state.DISPLAYSURF.get_width() - centerX
+        # Calculate difference to center
+        centerDif = abs(centerX - playerX)
+        # Remove the current difference form max difference to award bonus for being closer to the center
+        addedWeight = 1 / 100 - centerDif / maxDif / 100
+        return addedWeight
     
     # Normalise the given value
     def normalise(self, score):
