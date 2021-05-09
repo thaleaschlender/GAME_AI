@@ -35,7 +35,7 @@ class VirtualPlayer(pygame.sprite.Sprite):
         elif action == 2:
             if self.rect.right < self.SCREEN_WIDTH:
                 self.rect.move_ip(5, 0)
-
+                
     #return virtualcopy of self for gamestate
     def get_virtual_copy(self):
         new_player = VirtualPlayer(self.DISPLAYSURF, self.rect.center)
