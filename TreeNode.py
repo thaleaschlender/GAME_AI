@@ -9,6 +9,7 @@ ROLLOUT_DEPTH = 50
 # UCT formula parameter
 K = math.sqrt(2)
 
+REPEAT_ACTIONS = 10
 
 HUGE_NEGATIVE = -100000
 HUGE_POSITIVE = 100000
@@ -100,7 +101,12 @@ class TreeNode():
         
         while (not self.finishRollout(state, currentDepth)):
             action = random.choice(self.actions)
-            state.advance(self.actions[action])
+            for i in range(REPEAT_ACTIONS):
+                if (state.gameover):
+                    break
+                
+                state.advance(self.actions[action])
+                
             currentDepth+=1
         
         delta = self.value(state)
@@ -144,8 +150,10 @@ class TreeNode():
                 selectedNode = child
                 bestValue = uctValue
                 
-                
+        
+
         state.advance(self.actions[selectedNode.childIdx])
+        
         
         return selectedNode
     
@@ -160,6 +168,7 @@ class TreeNode():
                 bestAction = i
                 bestValue = x
             
+
         state.advance(self.actions[bestAction])
         tn = TreeNode(self, bestAction, self.actions, self.time)
         self.childs[bestAction] = tn
