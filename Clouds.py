@@ -2,16 +2,14 @@ import pygame
 from PCG import *
 
 
-class Background():
+class Clouds():
 
     def __init__(self, DISPLAYSURF):
 
-        elevation = ds_algorithm(513, 128)
-        moisture = ds_algorithm(513, 128)
-        pcg_bg(elevation, moisture)
+        noise = ds_algorithm(513, 128)
+        pcg_clouds(noise)
 
-        #self.bgimage = pygame.image.load('background.png')
-        self.bgimage = pygame.image.load('pcg_background.png')
+        self.bgimage = pygame.image.load('pcg_clouds.png')
         self.bgimage = pygame.transform.scale(self.bgimage, DISPLAYSURF.get_size())
         self.rectBGimg = self.bgimage.get_rect()
 
@@ -26,10 +24,20 @@ class Background():
         self.DISPLAYSURF = DISPLAYSURF
 
     def update(self):
-        # self.bgY1 += self.moving_speed
-        self.bgY1 += 0
-        # self.bgY2 += self.moving_speed
-        self.bgY2 += 0
+        self.bgY1 += self.moving_speed * 0.5
+        # self.bgY1 += 0
+        self.bgY2 += self.moving_speed * 0.5
+        # self.bgY2 += 0
+        if self.bgY1 >= self.rectBGimg.height:
+            self.bgY1 = -self.rectBGimg.height
+        if self.bgY2 >= self.rectBGimg.height:
+            self.bgY2 = -self.rectBGimg.height
+
+        self.draw()
+
+    def static(self):
+        self.bgY1 += self.moving_speed
+        self.bgY2 += self.moving_speed
         if self.bgY1 >= self.rectBGimg.height:
             self.bgY1 = -self.rectBGimg.height
         if self.bgY2 >= self.rectBGimg.height:
