@@ -156,16 +156,18 @@ def pcg_clouds(noise):  # for multi-layer ds noise
     # snow = (250, 250, 250)
     transparent = (0, 0, 0, 0)
     white = (255, 255, 255, 255)
-
+    '''
     for i in range(width):
         for j in range(height):
-            if noise[i][j] < 0.25:
-                im.putpixel((i, j), white)
+            if noise[i][j] < 0.05:
+                im.putpixel((i, j),(255, 255, 255, 200+int(noise[i][j]*100)))
+            elif noise[i][j] <0.25:
+                im.putpixel((i, j), (255, 255, 255, 170))
             else:
                 im.putpixel((i, j), transparent)
-
+    
     im = add_padding(im, 50, 0, 50, 0, transparent)
-
+    '''
     im.save('pcg_clouds.png')
     return im
     # im.show()
