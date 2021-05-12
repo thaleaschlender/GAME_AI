@@ -59,7 +59,7 @@ class EATrainer():
                         if living%25 == 0:
                             print('Players left: {}'.format(living))
 
-                        self.players[i].fitness += self.gamestates[i].get_score()*5
+                        self.players[i].fitness += self.gamestates[i].get_score()*10
 
     def normalize_fitness(self):
         scores = list()
@@ -118,7 +118,7 @@ class EATrainer():
         self.init_gamestates()
         self.run_game()
         self.players.sort(key=lambda x: x.fitness, reverse=True)
-        self.players[0].save('bestmodel_fit{}_pop{}_gens{}_mrc{}_mrw{}_ms{}'
+        self.players[0].save('best_fit{}_pop{}_gens{}_mrc{}_mrw{}_ms{}'
                             .format(np.round(self.players[0].fitness, decimals=1),
                                     self.pop_size, 
                                     self.generations,
@@ -127,8 +127,8 @@ class EATrainer():
                                     scale))
 
 
-trainer = EATrainer(1,1)
-trainer.train(mutation_rate_child=1, mutation_rate_weights=0.05, scale=0.3)
+trainer = EATrainer(100,10)
+trainer.train(mutation_rate_child=0.75, mutation_rate_weights=0.1, scale=0.5)
 # trainer.init_players()
 # trainer.init_gamestates()
 # trainer.run_game()

@@ -29,7 +29,7 @@ class EAPlayer(Player):
 
         self.brain = Sequential()
         self.brain.add(Dense(9, activation='relu', input_shape=(9,)))
-        self.brain.add(Dense(10, activation='relu'))
+        self.brain.add(Dense(12, activation='relu'))
         self.brain.add(Dense(3, activation='sigmoid'))
         self.brain.compile()
 
@@ -61,13 +61,13 @@ class EAPlayer(Player):
         self.move(prediction)
         self.draw()
 
-        self.fitness = np.round(self.fitness+0.0005, decimals=4)
+        self.fitness = np.round(self.fitness+0.01, decimals=4)
 
         return prediction
 
     #Implementation taken from https://github.com/dmackenz/Keras-Neuro-Evolution-Trading-Bot-Skeleton/blob/master/utils/Agent.py
     def mutate(self, mutation_rate, scale):
-        rng = np.random.default_rng(1923)
+        rng = np.random.default_rng()
         #iterate through layers
         for i in range(len(self.brain.layers)):
             weights = self.brain.layers[i].get_weights()
