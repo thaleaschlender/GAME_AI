@@ -63,7 +63,8 @@ class VirtualCoin(pygame.sprite.Sprite):
     # the obstacle class.
     def setVisible(self, isVisible):
         self.visible = isVisible
-
+        
+    #return virtualcopy of self for gamestate
     def get_virtual_copy(self):
         new_coin = VirtualCoin(self.DISPLAYSURF, self.speed, 
                         self.surf.get_width(), self.surf.get_height(), self.rect.center)
@@ -87,4 +88,3 @@ class Coin(VirtualCoin):
     def draw(self):
         self.DISPLAYSURF.blit(self.image, self.rect)    
 
-    #return virtualcopy of self for gamestate
