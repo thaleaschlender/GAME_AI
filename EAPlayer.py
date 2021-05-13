@@ -37,31 +37,35 @@ class EAPlayer(Player):
 
     def update(self, state):
         #get all necessary input variables and normalize them based on total height and width
-        player_x = self.rect.centerx/self.SCREEN_WIDTH
+        player_x = self.rect.centerx/self.SCREEN_WIDTH #for the player element
 
+        #for the wide obstacles
         wide_obstacle = state.get_wide_obstacle()
         wide_obstacle_height = wide_obstacle[0]/self.SCREEN_HEIGHT
         wide_obstacle_left = wide_obstacle[1]/self.SCREEN_WIDTH
         wide_obstacle_right = wide_obstacle[2]/self.SCREEN_WIDTH
-        
+
+        #for the tall obstacles
         tall_obstacle = state.get_tall_obstacle()
         tall_obstacle_height = tall_obstacle[0]/self.SCREEN_HEIGHT
         tall_obstacle_left = tall_obstacle[1]/self.SCREEN_WIDTH
         tall_obstacle_right = tall_obstacle[2]/self.SCREEN_WIDTH
-        
+
+        #for the coins
         coin = state.get_coins()[0] #assumes one coin, will not work otherwise
         coin_x = coin[0]/self.SCREEN_WIDTH
         coin_y = coin[1]/self.SCREEN_HEIGHT
 
+        #array taking in all the normalized input variables
         state_array = np.array([[player_x,
                     wide_obstacle_height, wide_obstacle_left, wide_obstacle_right,
                     tall_obstacle_height, tall_obstacle_left, tall_obstacle_right,
                     coin_x, coin_y]])
         prediction = np.argmax(self.brain(state_array)[0]) #select class with highest probability
-        self.move(prediction)
+        self.move(prediction) #applies that class on the simulation (?)
         self.draw()
 
-        self.fitness = np.round(self.fitness+0.01, decimals=4)
+        self.fitness = np.round(self.fitness+0.01, decimals=4) #determines the fitness for the new state of the simulation (?)
 
         return prediction
 
