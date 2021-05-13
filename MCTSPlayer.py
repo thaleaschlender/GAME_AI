@@ -28,5 +28,6 @@ class MCTSPlayer(Player):
     
     def update(self, state):
         action = self.act(state)
+        self.winds()
         self.move(action)
         self.draw()

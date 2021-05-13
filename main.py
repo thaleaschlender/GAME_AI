@@ -81,7 +81,7 @@ def check_coin_collision(player, coins, score):
     # Check if collided with any coins
     if collidedCoin != None and collidedCoin.visible:
         # Increase the score and reset coin to the top
-        score+=1
+        score+=5
         collidedCoin.setVisible(False)
         
     return score

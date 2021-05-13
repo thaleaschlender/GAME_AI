@@ -47,7 +47,7 @@ class Gamestate():
     def check_coin_collision(self):
         collided_coin = pygame.sprite.spritecollideany(self.player, self.coins)
         if collided_coin != None and collided_coin.visible:
-            self.score += 1
+            self.score += 5
             collided_coin.setVisible(False)
             
     
@@ -125,6 +125,7 @@ class Gamestate():
                 
 
             self.environment_sprites.update()
+            self.player.winds()
             self.player.move(action)
             self.check_coin_collision()
             self.check_obstacle_pass()
