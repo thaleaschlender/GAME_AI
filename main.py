@@ -108,10 +108,15 @@ P1 = MCTSPlayer(DISPLAYSURF, [1,2], 100) #MCTS Player
 
 E1 = Obstacle(DISPLAYSURF, speed, 40, 70, 0) #defines the original obstacles object spawing when we enter a new "screen scene" in the game
 
-E3 = Obstacle(DISPLAYSURF, speed, 405, 50, -350)
+E3 = Obstacle(DISPLAYSURF, speed, 405, 50, -350) #defines the wall obstacles object spawing when we enter a new "screen scene" in the game
 
 # Create coins
 C1 = Coin(DISPLAYSURF, speed, 20, 20, 700)
+C1 = Coin(DISPLAYSURF, speed, 20, 20, 700) #defines the coins objects
+#C2 = Coin(DISPLAYSURF, speed, 20, 20, -200)
+#C3 = Coin(DISPLAYSURF, speed, 20, 20, -400)
+#C4 = Coin(DISPLAYSURF, speed, 20, 20, -600)
+
 C1.setObstacles(E3, E1)
 
 back_ground = Background(DISPLAYSURF) #defines the background object
@@ -125,8 +130,11 @@ coins = pygame.sprite.Group()
 coins.add(C1)
 
 all_sprites = pygame.sprite.Group()
-# all_sprites.add(P1)
-all_sprites.add(E1)
+
+#all_sprites.add(P1) #adds the player element to the scene
+all_sprites.add(E1) #adds the first obstacle element to the scene
+#all_sprites.add(E2) #adds the active random obstacle element to the scene
+
 all_sprites.add(E3)
 all_sprites.add(C1)
 

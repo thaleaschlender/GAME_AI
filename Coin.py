@@ -10,7 +10,7 @@ class VirtualCoin(pygame.sprite.Sprite):
     except anything required with drawing to screen."""
     def __init__(self, DISPLAYSURF, speed, width, height, center):
         super().__init__()
-        self.DISPLAYSURF = DISPLAYSURF
+        self.DISPLAYSURF = DISPLAYSURF #defines as a surface object
         self.SCREEN_WIDTH, self.SCREEN_HEIGHT = self.DISPLAYSURF.get_size()
         self.speed = speed
         self.visible = True
@@ -74,15 +74,16 @@ class Coin(VirtualCoin):
     def __init__(self, DISPLAYSURF, speed, width, height, height_position): #initalisitation of an obstacle object with its width, height and height_position as parameters
         super().__init__(DISPLAYSURF, speed, width, height, (0, height_position))
         #Add appearence
-        self.image = pygame.Surface([width, height])
-        self.image.fill(COIN_COLOR)
+        self.image = pygame.Surface([width, height]) #defines the surface of the coin elements
+        self.image.fill(COIN_COLOR) #fills the coin elements with the coin color
 
+        # determines the position
         width_position = random.randint(40, self.SCREEN_WIDTH - 40)
         self.rect.centerx = width_position
 
     def update(self):
         if self.visible:
-            self.draw()
+            self.draw() #add the element to the screen
         super().update()  
 
     def draw(self):
