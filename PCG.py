@@ -153,24 +153,24 @@ def pcg_bg(e, m):  # for multi-layer ds noise
     water = (65, 105, 180)
     # beach = (240, 205, 150)
     # wetlands = (60, 240, 180)
-    # desert = (255, 255, 160)
-    # forest = (25, 90, 15)
+    desert = (255, 255, 160)
+    forest = (25, 90, 15)
     jungle = (120, 220, 10)
-    # mountain = (140, 140, 140)
+    mountain = (140, 140, 140)
     # snow = (250, 250, 250)
 
     for i in range(width):
         for j in range(height):
-            if e[i][j] < 0.3:
+            if e[i][j] < 0.25:
                 im.putpixel((i, j), deep)
-            elif e[i][j] < 0.7:
+            elif e[i][j] < 0.6:
                 im.putpixel((i, j), water)
-            # elif e[i][j] < 0.35:
-            #     im.putpixel((i, j), beach)
-            # elif e[i][j] < 0.4 and m[i][j] > 0.7:
-            #     im.putpixel((i, j), wetlands)
-            # elif e[i][j] < 0.6 and m[i][j] < 0.15:
-            #     im.putpixel((i, j), desert)
+            elif e[i][j] < 0.85 and m[i][j] < 0.15:
+                im.putpixel((i, j), desert)
+            elif e[i][j] < 0.85 and m[i][j] > 0.5:
+                im.putpixel((i, j), forest)
+            elif e[i][j] > 0.95:
+                im.putpixel((i, j), mountain)
             # elif e[i][j] < 0.6 and m[i][j] < 0.5:
             #     im.putpixel((i, j), forest)
             # elif e[i][j] < 0.6:
