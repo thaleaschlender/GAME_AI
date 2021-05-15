@@ -45,11 +45,18 @@ class VirtualPlayer(pygame.sprite.Sprite):
                 if self.rect.right > 0:
                     self.rect.move_ip(5, 0)
                 
-    #return virtualcopy of self for gamestate
+    # Return virtualcopy of self for gamestate
     def get_virtual_copy(self):
         new_player = VirtualPlayer(self.DISPLAYSURF, self.rect.center)
+        # Set current active winds for the virtual player
+        new_player.setWinds(self.timing, self.random_winds)
         return new_player
     
+    # Set wind variables
+    def setWinds(self, timing, random_winds):
+        self.timing = timing
+        self.random_winds = random_winds
+
     # Handle The winds applied to the player
     # Should be called from update method of the child classes.
     def winds(self):

@@ -2,6 +2,7 @@ import random
 import math
 from Player import Player
 from Gamestate import Gamestate
+import time
 
 # Defines how deep the tree is searched
 ROLLOUT_DEPTH = 70
@@ -37,8 +38,8 @@ class TreeNode():
     # Perform MCTS
     # If possible change to time limitation instead of fixed number of iterations.
     def mcts(self):
-        i = 0
-        while (i < 50):
+        startTime = time.time() * 1000
+        while (startTime + self.time > time.time() * 1000):
             state = self.rootState.copy()
             
             # Select next node
@@ -49,8 +50,8 @@ class TreeNode():
             
             # Back up the score
             self.backUp(selected, delta)
-            i+=1
-    
+            
+        
     # Find the child that was most visited
     def mostVisited(self):
         mostVisited = 0
