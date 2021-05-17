@@ -54,7 +54,7 @@ def end_game(sprites, score):
     #pygame.mixer.Sound('crash.wav').play()
     
     finalScore = FONT.render(str(score), True, WHITE)
-    
+    print(score)
     time.sleep(0.8)
     #Fills screen with black, shows a black screen
     DISPLAYSURF.fill(BLACK)
@@ -156,8 +156,7 @@ while True:
 
     back_ground.update()
 
-    # Display the score
-    display_score(score)
+    
     
 
     score = check_coin_collision(P1, coins, score)
@@ -172,6 +171,9 @@ while True:
     all_sprites.update()
     P1.update(state)
 
+    # Display the score
+    display_score(score)
+    
     # To be run if collision occurs between Player and Obstacle
     if pygame.sprite.spritecollideany(P1, obstacles):
         end_game(all_sprites, score)

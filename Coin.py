@@ -68,6 +68,7 @@ class VirtualCoin(pygame.sprite.Sprite):
     def get_virtual_copy(self):
         new_coin = VirtualCoin(self.DISPLAYSURF, self.speed, 
                         self.surf.get_width(), self.surf.get_height(), self.rect.center)
+        new_coin.setVisible(self.visible)
         return new_coin
 
 class Coin(VirtualCoin):
