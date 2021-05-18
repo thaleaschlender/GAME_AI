@@ -154,15 +154,6 @@ obstacles.add(E3)
 coins = pygame.sprite.Group()
 coins.add(C1)
 
-all_sprites = pygame.sprite.Group()
-
-# all_sprites.add(P1) #adds the player element to the scene
-all_sprites.add(E1)  # adds the first obstacle element to the scene
-# all_sprites.add(E2) #adds the active random obstacle element to the scene
-
-all_sprites.add(E3)
-all_sprites.add(C1)
-
 
 # coins.add(C2)
 # coins.add(C3)
@@ -204,8 +195,8 @@ while True:
     state.set_player(P1.get_virtual_copy())
 
     # Moves and Re-draws all Sprites
-    all_sprites.update()
-    P1.update(state)
+    # all_sprites.update()
+    # P1.update(state)
 
     # Display the score
     display_score(score)
@@ -216,8 +207,9 @@ while True:
 
     score = check_coin_collision(P1, coins, score)
 
-    # # Moves and Re-draws all Sprites
-    # all_sprites.update()
+    # Moves and Re-draws all Sprites
+    all_sprites.update()
+    P1.update(state)
 
     pygame.display.update()
     FramePerSec.tick(FPS)
