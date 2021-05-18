@@ -91,8 +91,6 @@ def check_coin_collision(player, coins, score):
     if collidedCoin != None and collidedCoin.visible:
         # Increase the score and reset coin to the top
         score += 5
-        # score += 1
-        # this was 1 un the background but apparently was changed
         collidedCoin.setVisible(False)
 
     return score
@@ -126,14 +124,11 @@ P1 = Player(DISPLAYSURF)  # defines the player object
 # defines the original obstacles object spawing when we enter a new "screen scene" in the game
 E1 = Obstacle(DISPLAYSURF, speed, 40, 70, 0)
 
-
-
 # defines the wall obstacles object spawing when we enter a new "screen scene" in the game
 E3 = Obstacle(DISPLAYSURF, speed, 405, 50, -350)
 
 # Create coins
 C1 = Coin(DISPLAYSURF, speed, 20, 20, 700)
-
 C1.setObstacles(E3, E1)
 
 back_ground = Background(DISPLAYSURF)  # defines the background object
