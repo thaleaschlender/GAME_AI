@@ -64,7 +64,13 @@ class TreeNode():
                 mostVisited = child.visits
                 mostVisitedChildIndex = childIndex
                 
-        return self.actions[mostVisitedChildIndex]
+        # Advance the root state with the taken action
+        self.rootState.advance(self.actions[mostVisitedChildIndex])
+        # If the action kills don't move neither left or right
+        if (not self.rootState.gameover):
+            return self.actions[mostVisitedChildIndex]
+        
+        return 0
     
     # Find the child that has highest average score
     def bestAction(self):
