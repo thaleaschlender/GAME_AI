@@ -60,11 +60,8 @@ def end_game(sprites, score):
     # pygame.mixer.Sound('crash.wav').play()
 
     finalScore = FONT.render(str(score), True, WHITE)
-<<<<<<< HEAD
     print(score)
-=======
 
->>>>>>> background
     time.sleep(0.8)
     # Fills screen with black, shows a black screen
     DISPLAYSURF.fill(BLACK)
@@ -93,26 +90,25 @@ def check_coin_collision(player, coins, score):
     # Check if collided with any coins
     if collidedCoin != None and collidedCoin.visible:
         # Increase the score and reset coin to the top
-<<<<<<< HEAD
-        score+=5
-=======
-        score += 1
->>>>>>> background
+        score += 5
+        # score += 1
+        # this was 1 un the background but apparently was changed
         collidedCoin.setVisible(False)
 
     return score
 
-<<<<<<< HEAD
 # Check if the player has passed an obstacle and increases the score if it has.
 # Returns the score of the game
+
+
 def check_obstacle_pass(player, obstacles, score):
-    for obstacle in obstacles :
+    for obstacle in obstacles:
         if (not obstacle.passed and obstacle.rect.top > player.rect.center[1]):
-            score+=1
+            score += 1
             obstacle.passed = True
-        
+
     return score
-        
+
 
 # Setting up Sprites
 
@@ -121,10 +117,10 @@ def check_obstacle_pass(player, obstacles, score):
 # P1 = RandomPlayer(DISPLAYSURF, [1,2]) # Random player
 # P1 = EAPlayer(DISPLAYSURF) # EA player
 # P1.load_brain('./models/bestmodel_fit10.5_pop100_gens10_mrc1_mrw0.05_ms0.3')
-P1 = MCTSPlayer(DISPLAYSURF, [1,2], 40) #MCTS Player
+P1 = MCTSPlayer(DISPLAYSURF, [1, 2], 40)  # MCTS Player
 
-E1 = Obstacle(DISPLAYSURF, speed, 40, 70, 0) #defines the original obstacles object spawing when we enter a new "screen scene" in the game
-=======
+# defines the original obstacles object spawing when we enter a new "screen scene" in the game
+E1 = Obstacle(DISPLAYSURF, speed, 40, 70, 0)
 
 # Setting up Sprites
 P1 = Player(DISPLAYSURF)  # defines the player object
@@ -133,13 +129,13 @@ P1 = Player(DISPLAYSURF)  # defines the player object
 E1 = Obstacle(DISPLAYSURF, speed, 40, 70, 0)
 
 # E2 = Obstacle(SCREEN_WIDTH,SCREEN_HEIGHT/2,SPEED) #obstacle that could be used for spawning random obstacles (e.g. vortex)
->>>>>>> background
 
-E3 = Obstacle(DISPLAYSURF, speed, 405, 50, -350) #defines the wall obstacles object spawing when we enter a new "screen scene" in the game
+# defines the wall obstacles object spawing when we enter a new "screen scene" in the game
+E3 = Obstacle(DISPLAYSURF, speed, 405, 50, -350)
 
 # Create coins
 C1 = Coin(DISPLAYSURF, speed, 20, 20, 700)
-C1 = Coin(DISPLAYSURF, speed, 20, 20, 700) #defines the coins objects
+C1 = Coin(DISPLAYSURF, speed, 20, 20, 700)  # defines the coins objects
 #C2 = Coin(DISPLAYSURF, speed, 20, 20, -200)
 #C3 = Coin(DISPLAYSURF, speed, 20, 20, -400)
 #C4 = Coin(DISPLAYSURF, speed, 20, 20, -600)
@@ -152,27 +148,22 @@ clouds = Clouds(DISPLAYSURF)
 # Creating Sprites Groups
 obstacles = pygame.sprite.Group()
 obstacles.add(E1)
-<<<<<<< HEAD
-=======
 # obstacles.add(E2)
->>>>>>> background
 obstacles.add(E3)
 
 coins = pygame.sprite.Group()
 coins.add(C1)
-<<<<<<< HEAD
 
 all_sprites = pygame.sprite.Group()
 
-#all_sprites.add(P1) #adds the player element to the scene
-all_sprites.add(E1) #adds the first obstacle element to the scene
-#all_sprites.add(E2) #adds the active random obstacle element to the scene
+# all_sprites.add(P1) #adds the player element to the scene
+all_sprites.add(E1)  # adds the first obstacle element to the scene
+# all_sprites.add(E2) #adds the active random obstacle element to the scene
 
 all_sprites.add(E3)
 all_sprites.add(C1)
 
 
-=======
 # coins.add(C2)
 # coins.add(C3)
 # coins.add(C4)
@@ -186,7 +177,6 @@ all_sprites.add(C1)
 # all_sprites.add(C2)
 # all_sprites.add(C3)
 # all_sprites.add(C4)
->>>>>>> background
 
 # Adding a new User event: how often to look for user event?
 INC_SPEED = pygame.USEREVENT + 1
@@ -205,17 +195,14 @@ while True:
     back_ground.update()
     clouds.update()
 
-    
-    
-
     score = check_coin_collision(P1, coins, score)
     score = check_obstacle_pass(P1, obstacles, score)
-    
+
     # The State has to be created here before updating the sprites, otherwise there is mismatch by one tick
     # when simulating players
     state = Gamestate(DISPLAYSURF, speed, score, pygame.time.get_ticks(), all_sprites)
     state.set_player(P1.get_virtual_copy())
-    
+
     # Moves and Re-draws all Sprites
     all_sprites.update()
     P1.update(state)
@@ -226,14 +213,11 @@ while True:
     # To be run if collision occurs between Player and Obstacle
     if pygame.sprite.spritecollideany(P1, obstacles):
         end_game(all_sprites, score)
-<<<<<<< HEAD
-=======
 
     score = check_coin_collision(P1, coins, score)
 
-    # Moves and Re-draws all Sprites
-    all_sprites.update()
->>>>>>> background
+    # # Moves and Re-draws all Sprites
+    # all_sprites.update()
 
     pygame.display.update()
     FramePerSec.tick(FPS)
