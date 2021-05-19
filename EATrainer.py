@@ -59,7 +59,7 @@ class EATrainer():
                         if living%25 == 0:
                             print('Players left: {}'.format(living))
 
-                        self.players[i].fitness += self.gamestates[i].get_score()*10
+                        self.players[i].fitness += self.gamestates[i].get_score()
 
     def normalize_fitness(self):
         scores = list()
@@ -127,8 +127,8 @@ class EATrainer():
                                     scale))
 
 
-trainer = EATrainer(100,10)
-trainer.train(mutation_rate_child=0.75, mutation_rate_weights=0.1, scale=0.5)
+trainer = EATrainer(250,15)
+trainer.train(mutation_rate_child=0.9, mutation_rate_weights=0.3, scale=0.7)
 # trainer.init_players()
 # trainer.init_gamestates()
 # trainer.run_game()

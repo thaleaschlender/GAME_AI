@@ -33,7 +33,7 @@ class EAPlayer(Player):
         self.brain.add(Dense(3, activation='sigmoid'))
         self.brain.compile()
 
-        self.fitness = 0.
+        self.fitness = 0
 
     def update(self, state):
         #get all necessary input variables and normalize them based on total height and width
@@ -65,8 +65,6 @@ class EAPlayer(Player):
         self.move(prediction) #applies that class on the simulation (?)
         self.draw()
 
-        self.fitness = np.round(self.fitness+0.01, decimals=4) #determines the fitness for the new state of the simulation (?)
-
         return prediction
 
     #Implementation taken from https://github.com/dmackenz/Keras-Neuro-Evolution-Trading-Bot-Skeleton/blob/master/utils/Agent.py
@@ -96,4 +94,4 @@ class EAPlayer(Player):
         return child
 
     def save(self, filename):
-        self.brain.save('./models/'+filename)
+        self.brain.save('./models/hidden12/'+filename)
