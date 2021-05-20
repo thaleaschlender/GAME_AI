@@ -10,6 +10,14 @@ $ python3 main.py
 
 It is important to check that the required packages are installed.
 
+The default agent is a human agent, you can control this agent with the left and right arrows. To load in another agent you need to comment out 
+
+```python
+P1 = Player(DISPLAYSURF)  # defines the player object
+```
+
+And uncomment the desired agent in `main.py`
+
 ## Install packages
 ```bash
 $ python -m pip install -r requirements.txt

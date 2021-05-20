@@ -111,11 +111,10 @@ def check_obstacle_pass(player, obstacles, score):
 # Setting up Sprites
 
 # Create the player
-# P1 = Player(DISPLAYSURF) # Human player
 # P1 = RandomPlayer(DISPLAYSURF, [1,2]) # Random player
 # P1 = EAPlayer(DISPLAYSURF) # EA player
-# P1.load_brain('./models/bestmodel_fit10.5_pop100_gens10_mrc1_mrw0.05_ms0.3')
-P1 = MCTSPlayer(DISPLAYSURF, [1, 2], 40)  # MCTS Player
+# P1.load_brain('./models/hidden12/best_fit34_pop250_gens15_mrc0.5_mrw0.3_ms0.7')
+# P1 = MCTSPlayer(DISPLAYSURF, [1, 2], 40)  # MCTS Player
 
 # Setting up Sprites
 P1 = Player(DISPLAYSURF)  # defines the player object
