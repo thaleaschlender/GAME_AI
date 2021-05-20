@@ -4,7 +4,7 @@ import numpy as np
 
 
 class Background():
-
+    """Background class collecting the two layers of background and combining them. This class implements the dynamic moverment of the clouds layer."""
     def __init__(self, DISPLAYSURF):
 
         elevation = ds_algorithm(513, 128)
